@@ -1,0 +1,41 @@
+Function LettresIdentiquesPositions(mot1 As Variant, mot2 As Variant) As String
+    Dim i As Integer
+    Dim sMot1 As String, sMot2 As String
+    Dim filteredMot1 As String, filteredMot2 As String
+    Dim result As String
+    
+    ' Conversion en chaînes
+    If IsNull(mot1) Or IsEmpty(mot1) Then sMot1 = "" Else sMot1 = CStr(mot1)
+    If IsNull(mot2) Or IsEmpty(mot2) Then sMot2 = "" Else sMot2 = CStr(mot2)
+    
+    ' Supprimer caractères non-alphanumériques
+    filteredMot1 = ""
+    For i = 1 To Len(sMot1)
+        If Mid(sMot1, i, 1) Like "[A-Za-z0-9]" Then filteredMot1 = filteredMot1 & Mid(sMot1, i, 1)
+    Next i
+    filteredMot2 = ""
+    For i = 1 To Len(sMot2)
+        If Mid(sMot2, i, 1) Like "[A-Za-z0-9]" Then filteredMot2 = filteredMot2 & Mid(sMot2, i, 1)
+    Next i
+    
+    ' Comparaison lettre par lettre
+    result = ""
+    Dim maxLen As Integer
+    maxLen = Len(filteredMot1)
+    If Len(filteredMot2) > maxLen Then maxLen = Len(filteredMot2)
+    
+    For i = 1 To maxLen
+        Dim c1 As String, c2 As String
+        If i <= Len(filteredMot1) Then c1 = Mid(filteredMot1, i, 1) Else c1 = ""
+        If i <= Len(filteredMot2) Then c2 = Mid(filteredMot2, i, 1) Else c2 = ""
+        
+        If c1 <> "" And c1 = c2 Then
+            result = result & c1 & " (" & i & "), "
+        End If
+    Next i
+    
+    ' Nettoyer la dernière virgule
+    If result <> "" Then result = Left(result, Len(result) - 2)
+    
+    LettresIdentiquesPositions = result
+End Function
